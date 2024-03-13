@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 
-import "./App.css";
+import CreatorBox from "./components/CreatorBox";
+import AddCreator from "./components/AddCreator";
+import AddFile from "./components/AddFile";
 
-function App() {
+const App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -11,76 +13,28 @@ function App() {
       .then((data) => setData(data));
   }, []);
 
-  const handelSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("file", e.target[0].files[0]);
-    fetch("http://localhost:3000/upload", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }
-
-
   return (
-    <div className=" relative">
+    <div className="  flex flex-col justify-center items-center mt-20">
       <img
         className=" w-screen h-screen object-cover absolute top-0 left-0 -z-10"
-        src="https://marketplace.canva.com/EAEthkBVLfQ/1/0/1600w/canva-blush-wave-desktop-wallpaper-drvq3zaYl2E.jpg"
+        src="http://localhost:3000/file/65f1dc24eb028c1f7e5d3f79"
         alt="abc"
       />
-      <div className=" w-auto h-screen flex flex-col justify-center items-center z-10">
-        <h1 className=" text-9xl text-orange-400">Zain Razzaq </h1>
-        <h3 className=" text-orange-400 text-3xl">BSCS21084</h3>
-        <form onSubmit={handelSubmit} >
-          <h3>Upload file :</h3>
-          <input type="file" />
-          <button type="submit">Upload</button>
-
-        </form>
-        <div className=" flex flex-col">
-
-          <div className="m-3 bg-slate-50 rounded-lg  w-[900px] h-[300px] overflow-scroll">
-            <div className="w-full flex justify-center">
-              <h3 className="m-1 text-xl text-orange-400">Creators</h3>
-            </div>
-            <ul>
-              {data.creatorData?.map((creator) => (
-                <li
-                  className="p-2 m-2 rounded-md bg-orange-200"
-                  key={creator._id}
-                >
-                  <h3>{creator.name}</h3>
-                  <p>{creator.email}</p>
-                  <p>{creator.age}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className=" m-3 bg-slate-50 rounded-lg w-[900px] h-[300px] overflow-scroll">
-            <div className="w-full flex justify-center">
-              <h3 className="m-1 text-xl text-orange-400">Features</h3>
-            </div>
-            <ul>
-              {data.featureData?.map((feature) => (
-                <li
-                  className="p-2 m-2 rounded-md bg-orange-200"
-                  key={feature._id}
-                >
-                  <h3>{feature.bookTitle}</h3>
-                  <p>{feature.bookAuthor}</p>
-                  <p>{feature.content}</p>
-                  <p>{feature.publishedOn}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <h1 className="text-6xl text-white font-extrabold ">Zain Razzaq</h1>
+      <h3 className="text-3xl text-white font-extrabold">BSCS21084</h3>
+      <div className=" w-10/12 flex flex-1 justify-center items-center">
+        <div className=" bg-slate-200 rounded-lg p-6">
+          <AddCreator />
+          <AddFile creators={data} />
+        </div>
+        <div className=" flex flex-wrap w-[900px] h-[650px] bg-white m-4 p-4 rounded-lg overflow-scroll">
+          {data?.map((creator) => (
+            <CreatorBox key={creator._id} {...creator} />
+          ))}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default App;

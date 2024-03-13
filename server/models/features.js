@@ -10,9 +10,9 @@ import mongoose from "mongoose";
 
 const featureSchema = mongoose.Schema(
   {
-    fileID: mongoose.Schema.Types.ObjectId,
+    fileId: mongoose.Schema.Types.ObjectId,
     fileName: String,
-    creatorID: mongoose.Schema.Types.ObjectId,
+    creatorId: mongoose.Schema.Types.ObjectId,
   },
   { timestamps: true }
 );
